@@ -1,0 +1,146 @@
+{
+    "name": "OrderFirewood",
+    "description": "Intent to order firewood for delivery",
+    "slots": [
+        {
+            "name": "FirewoodType",
+            "description": "The type of firewood to be delivered",
+            "slotConstraint": "Required",
+            "slotType": "FirewoodTypes",
+            "slotTypeVersion": "$LATEST",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "Do you want split wood or full logs?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 1,
+            "sampleUtterances": [
+                "I want {FirewoodType}",
+                "I need {FirewoodType}"
+            ]   
+        },
+        {
+            "name": "NumberCords",
+            "description": "Number of cords of firewood",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.NUMBER",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "How many cords of wood do you want?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 2,
+            "sampleUtterances": [
+                "I want to order {NumberCords}",
+                "I need {NumberCords}",
+                "I want {NumberCords} cords of wood"
+            ]   
+        },
+        {
+            "name": "DeliveryDate",
+            "description": "Date for delivery of firewood",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.DATE",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    {
+                        "content": "What day do you want the firewood to be delivered?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 3
+        },
+        {
+            "name": "DeliveryTime",
+            "description": "Time for delivery of firewood",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.TIME",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    { 	"content": "What time do you want the firewood to be delivered on {DeliveryDate}?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 4
+        },
+        {
+            "name": "DeliveryZip",
+            "description": "Zip code for delivery of firewood",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.NUMBER",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    { 	"content": "What is your zip code?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 5
+        },
+        {
+            "name": "DeliveryStreet",
+            "description": "Street address for delivery of firewood",
+            "slotConstraint": "Required",
+            "slotType": "AMAZON.StreetAddress",
+            "valueElicitationPrompt": {
+                "maxAttempts": 2,
+                "messages": [
+                    { 	"content": "What is your street address?",
+                        "contentType": "PlainText"
+                    }
+                ]
+            },
+            "priority": 6
+        }
+    ],
+    "sampleUtterances": [
+       "I would like to order {FirewoodType} firewood",
+       "I want {NumberCords} cords of {FirewoodType} firewood",
+       "I want to order {NumberCords} cords of {FirewoodType} firewood",
+       "I want to order {NumberCords} cords of {FirewoodType} firewood to be delivered at {DeliveryTime} on {DeliveryDate} to {DeliveryStreet} {DeliveryZip}",
+       "I want to buy firewood",
+       "I want to order firewood"
+    ],
+    
+    "confirmationPrompt": {
+        "maxAttempts": 2,
+        "messages": [
+            {
+                "content": "Your {FirewoodType} will be delivered on {DeliveryDate} at {DeliveryTime} to this address {DeliveryStreet} {DeliveryZip}.  Is this correct?",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "rejectionStatement": {
+        "messages": [
+            {
+                "content": "Your order has been cancelled.",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "dialogCodeHook": {
+    	"uri" : "arn:aws:lambda:us-east-1:yourID:function:firewoodLambda",
+    	"messageVersion" : "1.0"
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook",
+        "codeHook": {
+        	"uri" : "arn:aws:lambda:us-east-1:yourID:function:firewoodLambda",
+    		"messageVersion" : "1.0"
+        }
+    }
+}
