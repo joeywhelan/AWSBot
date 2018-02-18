@@ -1,0 +1,24 @@
+{
+  "currentIntent": {
+    "slots": {
+      "DeliveryStreet": "900 Tamarac Pkwy",
+      "DeliveryZip" : "80863",
+      "DeliveryDate": "2018-02-18",
+      "DeliveryTime": "10:00",
+      "FirewoodType": "split",
+      "NumberCords": "1"
+    },
+    "name": "OrderFirewood",
+    "confirmationStatus": "None"
+  },
+  "bot": {
+    "alias": "$LATEST",
+    "version": "$LATEST",
+    "name": "OrderFirewood"
+  },
+  "userId": "John",
+  "invocationSource": "DialogCodeHook",
+  "outputDialogMode": "Text",
+  "messageVersion": "1.0",
+  "sessionAttributes": {}
+}
