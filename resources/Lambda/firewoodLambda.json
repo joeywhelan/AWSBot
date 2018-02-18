@@ -1,0 +1,9 @@
+{
+	"FunctionName" : "firewoodLambda",
+    "Code" : {
+    			"ZipFile" : "firewoodLambda.zip"
+    		},
+	"Runtime" : "python3.6",
+    "Role" : "arn:aws:iam::yourId:role/yourRole",
+    "Handler" : "firewoodLambda.lambda_handler"
+}
