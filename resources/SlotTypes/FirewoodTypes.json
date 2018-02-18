@@ -1,0 +1,23 @@
+{
+    "enumerationValues": [
+        {
+            "value": "split",
+            "synonyms": [
+            	"cut wood",
+            	"sawed wood",
+            	"sawn"
+            ]
+        },
+        {
+            "value": "logs",
+            "synonyms": [
+            	"whole logs",
+            	"uncut logs",
+            	"not cut",
+            	"not sawed"
+            ]
+        }
+    ],
+    "name": "FirewoodTypes",
+    "description": "Type of firewood"
+}
