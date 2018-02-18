@@ -1,0 +1,31 @@
+{
+    "intents": [
+        {
+            "intentVersion": "$LATEST",
+            "intentName": "OrderFirewood"
+        }
+    ],
+    "name": "OrderFirewoodBot",
+    "locale": "en-US",
+    "abortStatement": {
+        "messages": [
+            {
+                "content": "Sorry, I'm not able to assist at this time",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "clarificationPrompt": {
+        "maxAttempts": 2,
+        "messages": [
+            {
+                "content": "I didn't understand you, what would you like to do?",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "childDirected": false,
+    "idleSessionTTLInSeconds": 600,
+    "processBehavior" : "BUILD",
+    "description": "Bot to order firewood on the behalf of a user"
+}
