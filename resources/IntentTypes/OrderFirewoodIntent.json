@@ -94,7 +94,7 @@
             "name": "DeliveryStreet",
             "description": "Street address for delivery of firewood",
             "slotConstraint": "Required",
-            "slotType": "AMAZON.StreetAddress",
+            "slotType": "AMAZON.PostalAddress",
             "valueElicitationPrompt": {
                 "maxAttempts": 2,
                 "messages": [
