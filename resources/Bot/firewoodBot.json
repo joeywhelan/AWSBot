@@ -3,6 +3,10 @@
         {
             "intentVersion": "$LATEST",
             "intentName": "OrderFirewood"
+        },
+        {
+            "intentVersion": "$LATEST",
+            "intentName": "RequestAgent" 
         }
     ],
     "name": "OrderFirewoodBot",
@@ -25,7 +29,7 @@
         ]
     },
     "childDirected": false,
-    "idleSessionTTLInSeconds": 600,
+    "idleSessionTTLInSeconds": 120,
     "processBehavior" : "BUILD",
     "description": "Bot to order firewood on the behalf of a user"
 }
