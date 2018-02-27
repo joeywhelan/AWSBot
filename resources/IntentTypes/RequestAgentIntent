@@ -1,0 +1,35 @@
+{
+    "name": "RequestAgent",
+    "description": "Intent for transfer to agent",
+    "slots": [],
+    "sampleUtterances": [
+       "Agent",
+       "Please transfer me to an agent",
+       "Transfer me to an agent",
+       "Transfer to agent"
+    ],
+    "confirmationPrompt": {
+        "maxAttempts": 2,
+        "messages": [
+            {
+                "content": "Would you like to be transferred to an agent?",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "rejectionStatement": {
+        "messages": [
+            {
+                "content": "OK, no transfer.",
+                "contentType": "PlainText"
+            }
+        ]
+    },
+    "fulfillmentActivity": {
+        "type": "CodeHook",
+        "codeHook": {
+        	"uri" : "arn:aws:lambda:us-east-1:yourId:function:firewoodLambda",
+    		"messageVersion" : "1.0"
+        }
+    }
+}
