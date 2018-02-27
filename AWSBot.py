@@ -1,5 +1,5 @@
 '''
-Created on Feb 18, 2018
+Created on Feb 27, 2018
 
 @author: joey whelan
 '''
@@ -39,7 +39,7 @@ class AWSBot(object):
             NoOptionError: Raised if option is missing in config file
         '''
         logger.debug('Entering')
-        self.bot, self.slots, self.intents, self._lambda, self.permission = self.__loadResources(config)
+        self.bot, self.slots, self.intents, self._lambda, self.permissions = self.__loadResources(config)
         self.buildClient = boto3.client('lex-models')
         self.testClient = boto3.client('lex-runtime')
         self.lambdaClient = boto3.client('lambda')
@@ -110,12 +110,15 @@ class AWSBot(object):
             zipBytes = zipFile.read()
         _lambda['Code']['ZipFile'] = zipBytes    
         
-        filename = cfgParser.get('AWSBot', 'permissionJsonFile')
-        with open(filename, 'r') as file:
-            permission = json.load(file)
-        
-              
-        return bot, slots, intents, _lambda, permission
+        permissionsDir = cfgParser.get('AWSBot', 'permissionsDir')
+        permissions = []
+        for root,_,filenames in os.walk(permissionsDir):
+            for filename in filenames:
+                with open(os.path.join(root,filename), 'r') as file:
+                    jobj = json.load(file)
+                    permissions.append(jobj)
+                    logger.debug(json.dumps(jobj, indent=4, sort_keys=True))      
+        return bot, slots, intents, _lambda, permissions
         
     def __buildLambda(self):
         '''Builds the AWS Lambda object via a zipped python code package.  Adds a permission to be called from the Lex intent
@@ -132,8 +135,14 @@ class AWSBot(object):
         logger.debug('Entering')
         resp = self.lambdaClient.create_function(**self._lambda)
         logger.debug(json.dumps(resp, indent=4, sort_keys=True, default=self.__dateSerializer))
+        
+        for permission in self.permissions:
+            resp = self.lambdaClient.add_permission(**permission)
+            logger.debug(json.dumps(resp, indent=4, sort_keys=True, default=self.__dateSerializer))
+        '''
         resp = self.lambdaClient.add_permission(**self.permission)
         logger.debug(json.dumps(resp, indent=4, sort_keys=True, default=self.__dateSerializer))
+        '''
         logger.debug('Exiting')
     
     def __buildSlotTypes(self):
@@ -247,7 +256,7 @@ class AWSBot(object):
                 logger.debug(json.dumps(resp, indent=4, sort_keys=True, default=self.__dateSerializer))
             except Exception as err:
                 logger.debug(err)
-        time.sleep(5)  #artificial delay to allow the operation to be completed on AWS
+            time.sleep(5)  #artificial delay to allow the operation to be completed on AWS
         logger.debug('Exiting')
     
     def __destroyLambda(self):
@@ -308,8 +317,7 @@ class AWSBot(object):
         self.__buildSlotTypes()
         self.__buildIntents()
         self.__buildBot()
-        
-        
+    
         logger.debug('Exiting')
     
     def test(self, msg):
@@ -358,6 +366,6 @@ class AWSBot(object):
 if __name__ == '__main__':
     bot = AWSBot('awsbot.cfg')
     bot.build()
-    bot.test('I want to order 2 cords of split firewood to be delivered at 1 pm on tomorrow to 900 Tamarac Pkwy 80863')
-    bot.destroy()
+    #bot.test('I want to order 2 cords of split firewood to be delivered at 1 pm on tomorrow to 900 Tamarac Pkwy 80863')
+    #bot.destroy()
     
