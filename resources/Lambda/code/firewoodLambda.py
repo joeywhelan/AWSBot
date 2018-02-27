@@ -8,7 +8,6 @@ import dateutil.parser
 import datetime
 import time
 import os
-import logging
 import json
 from smartystreets_python_sdk import StaticCredentials, exceptions, ClientBuilder
 from smartystreets_python_sdk.us_street import Lookup
@@ -16,11 +15,9 @@ from smartystreets_python_sdk.us_street import Lookup
 FIREWOOD_TYPES = ['split', 'logs']
 PRICE_PER_CORD = {'split' : 200, 'logs' : 150}
 DELIVERY_ZIP = '80863'
-AUTH_ID = 'yourID'
+AUTH_ID = 'yourId'
 AUTH_TOKEN = 'yourToken'
 
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
 
 class LexHandler(object):
     '''
@@ -261,7 +258,28 @@ class LexHandler(object):
                                     }
                     }
         return resp
-            
+    
+    def __agentTransfer(self):
+        if self.source == 'FulfillmentCodeHook':
+            if self.sessionAttributes:
+                self.sessionAttributes['Agent'] = 'True';
+            else:
+                self.sessionAttributes = {'Agent' : 'True'}
+            msg = 'Transferring you to an agent now.'
+            self.sessionAttributes['Agent'] = True;
+            resp = {
+                    'sessionAttributes': self.sessionAttributes,
+                    'dialogAction': {
+                                        'type': 'Close',
+                                        'fulfillmentState': 'Fulfilled',
+                                        'message': {
+                                            'contentType': 'PlainText',
+                                            'content': msg
+                                        }
+                                    }
+                    }
+            return resp
+     
     def __validateOrderFirewood(self, firewoodType, numberCords, deliveryDate, deliveryTime, deliveryStreet, deliveryZip):
         '''Main Lex input data validation routine.  Processes both dialog verification and fulfillment events from Lex.
         
@@ -319,6 +337,8 @@ class LexHandler(object):
         '''
         if self.name == 'OrderFirewood':
             return self.__processOrderFirewood();
+        elif self.name == 'RequestAgent':
+            return self.__agentTransfer();
         else:
             raise Exception('Intent with name ' + self.name + ' not supported')
 
