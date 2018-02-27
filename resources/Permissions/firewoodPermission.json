@@ -1,0 +1,7 @@
+{
+	"Action" : "lambda:InvokeFunction",
+    "FunctionName" : "firewoodLambda",
+    "Principal" : "lex.amazonaws.com",
+    "SourceArn"	: "arn:aws:lex:us-east-1:yourId:intent:OrderFirewood:*",
+    "StatementId" : "ID-1"
+}
