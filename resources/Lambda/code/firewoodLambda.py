@@ -266,7 +266,7 @@ class LexHandler(object):
             else:
                 self.sessionAttributes = {'Agent' : 'True'}
             msg = 'Transferring you to an agent now.'
-            self.sessionAttributes['Agent'] = True;
+           
             resp = {
                     'sessionAttributes': self.sessionAttributes,
                     'dialogAction': {
